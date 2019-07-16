@@ -1,7 +1,15 @@
+// #ifdef __STDC_ALLOC_LIB__
+// #define __STDC_WANT_LIB_EXT2__ 1
+// #else
+// #define _POSIX_C_SOURCE 200809L
+// #endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include "lib.h"
+// #include <string.h>
+// #include <assert.h>
 
 /*
     Duplicates the input string by dynamically allocating memory for 
@@ -12,6 +20,28 @@
 */
 char *string_dup(char *src)
 {
+    // char *ptr = strdup(src);
+    // ptr = (char*) realloc(ptr, 2*strlen(src) + 1);
+    // strcat(ptr, src);
+
+    // return ptr;
+
+    // size_t len = strlen(src);
+    // char *ret = realloc(src, 2*len+1);
+    // if(ret) {
+    //     memcpy(ret+len, ret, len);
+    //     ret[2*len]=0;
+    // }
+    // return ret;
+
+    int size = string_length(src);
+    char *output = malloc(size + 1);
+    for (int i = 0; i <= size; i++) {
+        output[i] = src[i];
+    }
+    output[size] = '\0';
+
+    return output;
 
 }
 
@@ -24,7 +54,17 @@ char *string_dup(char *src)
 */
 void mem_copy(void *dest, const void *src, int n)
 {
+    char *cast_src = (char *) src;
+    char *cast_dest = (char *) dest;
 
+    while (n > 0) {
+        *cast_dest = *cast_src;
+        cast_dest++;
+        cast_src++;
+        n--;
+    }
+
+    *cast_dest = '\0';
 }
 
 /*
@@ -40,6 +80,17 @@ void mem_copy(void *dest, const void *src, int n)
 */
 void *resize_memory(void *ptr, int old_size, int new_size)
 {
+    char *new = (char *) malloc(new_size);
+    char *pointer = ptr;
+    for (int i = 0; i <= old_size; i++) {
+        if (i == new_size) {
+            break;
+        }
+        new[i] = pointer[i];
+    }
+
+    return new;
+
 
 }
 
